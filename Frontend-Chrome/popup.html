@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <link href="popup.css" rel="stylesheet" type="text/css" />
   <script type="module" src="popup.js"></script>
 </head>
+
 <body>
   <div class="app">
     <header class="app-header">
@@ -18,7 +20,7 @@
       <!-- API Configuration Section -->
       <section class="config-section">
         <!-- <h2 class="section-title">Configuration</h2> -->
-        
+
         <div class="form-group">
           <label class="form-label" for="url-input-field">API URL</label>
           <div class="input-group">
@@ -29,14 +31,15 @@
 
         <div class="form-group">
           <label class="form-label" for="maxactivefetches-input-field">Parallel Processing</label>
-          <input class="form-input" type="number" min="1" max="10" id="maxactivefetches-input-field" title="Number of images to process simultaneously"/>
+          <input class="form-input" type="number" min="1" max="10" id="maxactivefetches-input-field"
+            title="Number of images to process simultaneously" />
         </div>
       </section>
 
       <!-- Processing & Display Options Section -->
       <section class="config-section">
         <h2 class="section-title">Processing & Display Options</h2>
-        
+
         <div class="checkbox-group two-column">
           <div class="checkbox-item">
             <input class="checkbox" id="denoiser-checkbox" type="checkbox" />
@@ -100,33 +103,44 @@
             </div>
           </div>
         </div>
-        
+
         <div class="form-group two-column">
           <div class="form-field">
             <label class="form-label" for="denoisesigma-input-field">Denoise Sigma</label>
-            <input class="form-input" type="number" min="0" max="1000" id="denoisesigma-input-field" title="Noise level to expect from images"/>
+            <input class="form-input" type="number" min="0" max="1000" id="denoisesigma-input-field"
+              title="Noise level to expect from images" />
           </div>
           <div class="form-field">
             <label class="form-label" for="colortolerance-input-field">Color Tolerance</label>
-            <input class="form-input" type="number" min="-1" max="1000" id="colortolerance-input-field" title="Threshold for determining if an image is grayscale"/>
+            <input class="form-input" type="number" min="-1" max="1000" id="colortolerance-input-field"
+              title="Threshold for determining if an image is grayscale" />
           </div>
         </div>
 
         <div class="form-group" style="display:none">
           <label class="form-label" for="colorstride-input-field">Color Stride</label>
-          <input class="form-input" type="number" min="0" max="255" id="colorstride-input-field" title="Skip pixels when checking for color"/>
+          <input class="form-input" type="number" min="0" max="255" id="colorstride-input-field"
+            title="Skip pixels when checking for color" />
         </div>
       </section>
 
       <!-- Manga Sites Section -->
-      <section class="config-section">
-        <h2 class="section-title">Manga Sites</h2>
-        
-        <div class="form-group">
-          <label class="form-label" for="websites-input-field">Supported Sites</label>
-          <textarea class="form-textarea" id="websites-input-field" rows="3" placeholder="Enter manga site domains, one per line" spellcheck="false"></textarea>
+      <section class="config-section accordion-section">
+        <div class="accordion-header" id="manga-sites-header">
+          <h2 class="section-title">Manga Sites</h2>
+          <span class="accordion-icon">▼</span>
         </div>
 
+        <div class="accordion-content collapsed" id="manga-sites-content">
+          <div class="form-group">
+            <label class="form-label" for="websites-input-field">Supported Sites</label>
+            <textarea class="form-textarea" id="websites-input-field" rows="3"
+              placeholder="Enter manga site domains, one per line" spellcheck="false"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="config-section">
         <div class="form-group">
           <button class="btn btn-outline" id="addsite" style="display: none;">Add Current Site</button>
         </div>
@@ -148,4 +162,5 @@
     </main>
   </div>
 </body>
+
 </html>

@@ -30,7 +30,29 @@ function addLoadingState(button, text = "Processing...") {
   };
 }
 
-// Accordion functionality removed - all content is now visible
+// Accordion functionality for Manga Sites section
+function initializeAccordion() {
+  const accordionHeader = document.getElementById('manga-sites-header');
+  const accordionContent = document.getElementById('manga-sites-content');
+  const accordionIcon = accordionHeader.querySelector('.accordion-icon');
+  
+  accordionHeader.addEventListener('click', () => {
+    const isCollapsed = accordionContent.classList.contains('collapsed');
+    
+    if (isCollapsed) {
+      // Expand accordion
+      accordionContent.classList.remove('collapsed');
+      accordionIcon.classList.add('rotated');
+    } else {
+      // Collapse accordion
+      accordionContent.classList.add('collapsed');
+      accordionIcon.classList.remove('rotated');
+    }
+  });
+}
+
+// Initialize accordion when DOM is loaded
+document.addEventListener('DOMContentLoaded', initializeAccordion);
 
 function showNotification(message, type = 'info') {
   // Create notification element
