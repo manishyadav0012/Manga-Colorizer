@@ -1,3 +1,4 @@
+// DOM Elements
 const urlInput = document.getElementById("url-input-field");
 const maxActiveFetches = document.getElementById("maxactivefetches-input-field");
 const showOriginalCheckbox = document.getElementById("showoriginal-checkbox");
@@ -17,6 +18,76 @@ const addSiteButton = document.getElementById("addsite");
 const runButton = document.getElementById("run");
 const testApiButton = document.getElementById("test-api");
 const forceRunButton = document.getElementById("force-run");
+
+// UI Enhancement functions
+function addLoadingState(button, text = "Processing...") {
+  const originalText = button.innerHTML;
+  button.innerHTML = `<span class="btn-icon">⏳</span>${text}`;
+  button.disabled = true;
+  return () => {
+    button.innerHTML = originalText;
+    button.disabled = false;
+  };
+}
+
+// Accordion functionality
+function toggleAccordion(accordionId) {
+  const content = document.getElementById(accordionId);
+  const icon = document.getElementById(accordionId + '-icon');
+  
+  if (!content || !icon) {
+    console.error('Accordion elements not found:', accordionId);
+    return;
+  }
+  
+  if (content.style.display === 'none' || content.style.display === '') {
+    content.style.display = 'block';
+    icon.classList.add('rotated');
+    icon.textContent = '▲';
+  } else {
+    content.style.display = 'none';
+    icon.classList.remove('rotated');
+    icon.textContent = '▼';
+  }
+}
+
+// Make toggleAccordion globally available
+window.toggleAccordion = toggleAccordion;
+
+function showNotification(message, type = 'info') {
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.innerHTML = `
+    <div class="notification-content">
+      <span class="notification-icon">${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
+      <span class="notification-text">${message}</span>
+    </div>
+  `;
+  
+  // Add styles
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: ${type === 'success' ? '#48bb78' : type === 'error' ? '#f56565' : '#4299e1'};
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+    max-width: 300px;
+  `;
+  
+  document.body.appendChild(notification);
+  
+  // Remove after 3 seconds
+  setTimeout(() => {
+    notification.style.animation = 'slideOut 0.3s ease-in';
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+}
 
 chrome.storage.local.get(["apiURL", "maxActiveFetches", "showOriginal", "showColorized", "cache", "denoise",
                 "colorize", "upscale", "denoiseSigma", "upscaleFactor",
@@ -81,14 +152,31 @@ function updateVisibility() {
     });
 }
 
-testApiButton.addEventListener("click",() => {
+testApiButton.addEventListener("click", () => {
+    if (!urlInput.value.trim()) {
+        showNotification('Please enter an API URL first', 'error');
+        return;
+    }
+    
+    const resetButton = addLoadingState(testApiButton, 'Testing...');
+    
     chrome.tabs.create({url: urlInput.value, selected: true, active: true});
     chrome.storage.local.set({
         apiURL: urlInput.value.trim()
-    }); 
-})
+    });
+    
+    showNotification('API URL saved and opened in new tab', 'success');
+    setTimeout(resetButton, 1000);
+});
 
-runButton.addEventListener("click",() => {
+runButton.addEventListener("click", () => {
+    if (!urlInput.value.trim()) {
+        showNotification('Please enter an API URL first', 'error');
+        return;
+    }
+    
+    const resetButton = addLoadingState(runButton, 'Starting...');
+    
     let selectedUpscaleFactor;
     upscaleFactorSelector.forEach((radio) => {
         if (radio.checked) {
@@ -117,23 +205,62 @@ runButton.addEventListener("click",() => {
         chrome.tabs.sendMessage(tabs[0].id, {
             action: 'runColorizer',
         });
+        showNotification('Colorization started! Check the page for results.', 'success');
+        setTimeout(resetButton, 2000);
     });
-})
+});
 
 forceRunButton.addEventListener('click', () => {
-    forceRunButton.textContent = "Select an Image";
-    forceRunButton.disabled = true
+    if (!urlInput.value.trim()) {
+        showNotification('Please enter an API URL first', 'error');
+        return;
+    }
+    
+    const resetButton = addLoadingState(forceRunButton, 'Select an Image');
+    forceRunButton.disabled = true;
+    
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.tabs.sendMessage(tabs[0].id, { action: "startSelectMode" });
+        showNotification('Click on an image to colorize it', 'info');
     });
 });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "exitSelectMode") {
-        forceRunButton.textContent = "Force Colorize!";
-        forceRunButton.disabled = false
+        forceRunButton.innerHTML = '<span class="btn-icon">🎯</span>Force Colorize!';
+        forceRunButton.disabled = false;
+        showNotification('Image selection mode ended', 'info');
     }
 });
 
 showOriginalCheckbox.addEventListener('change', updateVisibility);
 showColorizedCheckbox.addEventListener('change', updateVisibility);
+
+// Initialize accordion event listeners immediately
+function initializeAccordions() {
+  const accordionHeaders = document.querySelectorAll('.accordion-header');
+  console.log('Found accordion headers:', accordionHeaders.length);
+  
+  // Set initial state for Manga Sites accordion (open by default)
+  const sitesAccordion = document.getElementById('sites-accordion');
+  const sitesIcon = document.getElementById('sites-accordion-icon');
+  if (sitesAccordion && sitesIcon) {
+    sitesAccordion.style.display = 'block';
+    sitesIcon.classList.add('rotated');
+    sitesIcon.textContent = '▲';
+  }
+  
+  accordionHeaders.forEach(header => {
+    const accordionId = header.getAttribute('data-accordion');
+    console.log('Setting up accordion:', accordionId);
+    
+    header.addEventListener('click', function(e) {
+      e.preventDefault();
+      console.log('Accordion clicked:', accordionId);
+      toggleAccordion(accordionId);
+    });
+  });
+}
+
+// Try to initialize immediately
+setTimeout(initializeAccordions, 100);
