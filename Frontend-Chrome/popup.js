@@ -30,29 +30,7 @@ function addLoadingState(button, text = "Processing...") {
   };
 }
 
-// Accordion functionality
-function toggleAccordion(accordionId) {
-  const content = document.getElementById(accordionId);
-  const icon = document.getElementById(accordionId + '-icon');
-  
-  if (!content || !icon) {
-    console.error('Accordion elements not found:', accordionId);
-    return;
-  }
-  
-  if (content.style.display === 'none' || content.style.display === '') {
-    content.style.display = 'block';
-    icon.classList.add('rotated');
-    icon.textContent = '▲';
-  } else {
-    content.style.display = 'none';
-    icon.classList.remove('rotated');
-    icon.textContent = '▼';
-  }
-}
-
-// Make toggleAccordion globally available
-window.toggleAccordion = toggleAccordion;
+// Accordion functionality removed - all content is now visible
 
 function showNotification(message, type = 'info') {
   // Create notification element
@@ -236,31 +214,4 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 showOriginalCheckbox.addEventListener('change', updateVisibility);
 showColorizedCheckbox.addEventListener('change', updateVisibility);
 
-// Initialize accordion event listeners immediately
-function initializeAccordions() {
-  const accordionHeaders = document.querySelectorAll('.accordion-header');
-  console.log('Found accordion headers:', accordionHeaders.length);
-  
-  // Set initial state for Manga Sites accordion (open by default)
-  const sitesAccordion = document.getElementById('sites-accordion');
-  const sitesIcon = document.getElementById('sites-accordion-icon');
-  if (sitesAccordion && sitesIcon) {
-    sitesAccordion.style.display = 'block';
-    sitesIcon.classList.add('rotated');
-    sitesIcon.textContent = '▲';
-  }
-  
-  accordionHeaders.forEach(header => {
-    const accordionId = header.getAttribute('data-accordion');
-    console.log('Setting up accordion:', accordionId);
-    
-    header.addEventListener('click', function(e) {
-      e.preventDefault();
-      console.log('Accordion clicked:', accordionId);
-      toggleAccordion(accordionId);
-    });
-  });
-}
-
-// Try to initialize immediately
-setTimeout(initializeAccordions, 100);
+// Accordion initialization removed - all content is now visible

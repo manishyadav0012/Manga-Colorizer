@@ -16,145 +16,119 @@
 
     <main class="app-content">
       <!-- API Configuration Section -->
-      <section class="config-section accordion-section">
-        <div class="accordion-header" data-accordion="config-accordion">
-          <h2 class="section-title">Configuration</h2>
-          <span class="accordion-icon" id="config-accordion-icon">▼</span>
-        </div>
+      <section class="config-section">
+        <!-- <h2 class="section-title">Configuration</h2> -->
         
-        <div class="accordion-content" id="config-accordion" style="display: none;">
-          <div class="form-group">
-            <label class="form-label" for="url-input-field">API URL</label>
-            <div class="input-group">
-              <input class="form-input" type="text" id="url-input-field" placeholder="Enter API endpoint URL" />
-              <button class="btn btn-secondary" id="test-api">Test</button>
-            </div>
+        <div class="form-group">
+          <label class="form-label" for="url-input-field">API URL</label>
+          <div class="input-group">
+            <input class="form-input" type="text" id="url-input-field" placeholder="Enter API endpoint URL" />
+            <button class="btn btn-secondary" id="test-api">Test</button>
           </div>
+        </div>
 
-          <div class="form-group">
-            <label class="form-label" for="maxactivefetches-input-field">Parallel Processing</label>
-            <input class="form-input" type="number" min="1" max="10" id="maxactivefetches-input-field" title="Number of images to process simultaneously"/>
-          </div>
+        <div class="form-group">
+          <label class="form-label" for="maxactivefetches-input-field">Parallel Processing</label>
+          <input class="form-input" type="number" min="1" max="10" id="maxactivefetches-input-field" title="Number of images to process simultaneously"/>
         </div>
       </section>
 
-      <!-- Processing Options Section -->
-      <section class="config-section accordion-section">
-        <div class="accordion-header" data-accordion="processing-accordion">
-          <h2 class="section-title">Processing Options</h2>
-          <span class="accordion-icon" id="processing-accordion-icon">▼</span>
+      <!-- Processing & Display Options Section -->
+      <section class="config-section">
+        <h2 class="section-title">Processing & Display Options</h2>
+        
+        <div class="checkbox-group two-column">
+          <div class="checkbox-item">
+            <input class="checkbox" id="denoiser-checkbox" type="checkbox" />
+            <label class="checkbox-label" for="denoiser-checkbox">
+              <span class="checkbox-text">Use Denoiser</span>
+              <!-- <span class="checkbox-description">Remove noise from images</span> -->
+            </label>
+          </div>
+
+          <div class="checkbox-item">
+            <input class="checkbox" id="colorizer-checkbox" type="checkbox" />
+            <label class="checkbox-label" for="colorizer-checkbox">
+              <span class="checkbox-text">Use Colorizer</span>
+              <!-- <span class="checkbox-description">Add colors to grayscale images</span> -->
+            </label>
+          </div>
+
+          <div class="checkbox-item">
+            <input class="checkbox" id="upscaler-checkbox" type="checkbox" />
+            <label class="checkbox-label" for="upscaler-checkbox">
+              <span class="checkbox-text">Use Upscaler</span>
+              <!-- <span class="checkbox-description">Enhance image resolution</span> -->
+            </label>
+          </div>
+
+          <div class="checkbox-item">
+            <input class="checkbox" id="showoriginal-checkbox" type="checkbox" />
+            <label class="checkbox-label" for="showoriginal-checkbox">
+              <span class="checkbox-text">Show Original</span>
+              <!-- <span class="checkbox-description">Display original images</span> -->
+            </label>
+          </div>
+
+          <div class="checkbox-item">
+            <input class="checkbox" id="showcolorized-checkbox" type="checkbox" />
+            <label class="checkbox-label" for="showcolorized-checkbox">
+              <span class="checkbox-text">Show Colorized</span>
+              <!-- <span class="checkbox-description">Display processed images</span> -->
+            </label>
+          </div>
+
+          <div class="checkbox-item">
+            <input class="checkbox" id="cache-checkbox" type="checkbox" />
+            <label class="checkbox-label" for="cache-checkbox">
+              <span class="checkbox-text">Use Cache</span>
+              <!-- <span class="checkbox-description">Cache images on server</span> -->
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group" style="display:none">
+          <label class="form-label">Upscale Factor</label>
+          <div class="radio-group" id="upscalefactor-selector">
+            <div class="radio-item">
+              <input class="radio" type="radio" id="upscale-factor-2" name="upscale-factor" value="2">
+              <label class="radio-label" for="upscale-factor-2">2x</label>
+            </div>
+            <div class="radio-item">
+              <input class="radio" type="radio" id="upscale-factor-4" name="upscale-factor" value="4" checked>
+              <label class="radio-label" for="upscale-factor-4">4x</label>
+            </div>
+          </div>
         </div>
         
-        <div class="accordion-content" id="processing-accordion" style="display: none;">
-          <div class="checkbox-group">
-            <div class="checkbox-item">
-              <input class="checkbox" id="denoiser-checkbox" type="checkbox" />
-              <label class="checkbox-label" for="denoiser-checkbox">
-                <span class="checkbox-text">Use Denoiser</span>
-                <span class="checkbox-description">Remove noise from images</span>
-              </label>
-            </div>
-
-            <div class="checkbox-item">
-              <input class="checkbox" id="colorizer-checkbox" type="checkbox" />
-              <label class="checkbox-label" for="colorizer-checkbox">
-                <span class="checkbox-text">Use Colorizer</span>
-                <span class="checkbox-description">Add colors to grayscale images</span>
-              </label>
-            </div>
-
-            <div class="checkbox-item">
-              <input class="checkbox" id="upscaler-checkbox" type="checkbox" />
-              <label class="checkbox-label" for="upscaler-checkbox">
-                <span class="checkbox-text">Use Upscaler</span>
-                <span class="checkbox-description">Enhance image resolution</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group" style="display:none">
-            <label class="form-label">Upscale Factor</label>
-            <div class="radio-group" id="upscalefactor-selector">
-              <div class="radio-item">
-                <input class="radio" type="radio" id="upscale-factor-2" name="upscale-factor" value="2">
-                <label class="radio-label" for="upscale-factor-2">2x</label>
-              </div>
-              <div class="radio-item">
-                <input class="radio" type="radio" id="upscale-factor-4" name="upscale-factor" value="4" checked>
-                <label class="radio-label" for="upscale-factor-4">4x</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Display & Advanced Settings Section -->
-      <section class="config-section accordion-section">
-        <div class="accordion-header" data-accordion="advanced-accordion">
-          <h2 class="section-title">Display & Advanced Settings</h2>
-          <span class="accordion-icon" id="advanced-accordion-icon">▼</span>
-        </div>
-        
-        <div class="accordion-content" id="advanced-accordion" style="display: none;">
-          <div class="checkbox-group">
-            <div class="checkbox-item">
-              <input class="checkbox" id="showoriginal-checkbox" type="checkbox" />
-              <label class="checkbox-label" for="showoriginal-checkbox">
-                <span class="checkbox-text">Show Original</span>
-                <span class="checkbox-description">Display original images</span>
-              </label>
-            </div>
-
-            <div class="checkbox-item">
-              <input class="checkbox" id="showcolorized-checkbox" type="checkbox" />
-              <label class="checkbox-label" for="showcolorized-checkbox">
-                <span class="checkbox-text">Show Colorized</span>
-                <span class="checkbox-description">Display processed images</span>
-              </label>
-            </div>
-
-            <div class="checkbox-item">
-              <input class="checkbox" id="cache-checkbox" type="checkbox" />
-              <label class="checkbox-label" for="cache-checkbox">
-                <span class="checkbox-text">Use Cache</span>
-                <span class="checkbox-description">Cache images on server</span>
-              </label>
-            </div>
-          </div>
-          
-          <div class="form-group">
+        <div class="form-group two-column">
+          <div class="form-field">
             <label class="form-label" for="denoisesigma-input-field">Denoise Sigma</label>
             <input class="form-input" type="number" min="0" max="1000" id="denoisesigma-input-field" title="Noise level to expect from images"/>
           </div>
-
-          <div class="form-group">
+          <div class="form-field">
             <label class="form-label" for="colortolerance-input-field">Color Tolerance</label>
             <input class="form-input" type="number" min="-1" max="1000" id="colortolerance-input-field" title="Threshold for determining if an image is grayscale"/>
           </div>
+        </div>
 
-          <div class="form-group" style="display:none">
-            <label class="form-label" for="colorstride-input-field">Color Stride</label>
-            <input class="form-input" type="number" min="0" max="255" id="colorstride-input-field" title="Skip pixels when checking for color"/>
-          </div>
+        <div class="form-group" style="display:none">
+          <label class="form-label" for="colorstride-input-field">Color Stride</label>
+          <input class="form-input" type="number" min="0" max="255" id="colorstride-input-field" title="Skip pixels when checking for color"/>
         </div>
       </section>
 
       <!-- Manga Sites Section -->
-      <section class="config-section accordion-section">
-        <div class="accordion-header" data-accordion="sites-accordion">
-          <h2 class="section-title">Manga Sites</h2>
-          <span class="accordion-icon" id="sites-accordion-icon">▼</span>
-        </div>
+      <section class="config-section">
+        <h2 class="section-title">Manga Sites</h2>
         
-        <div class="accordion-content" id="sites-accordion">
-          <div class="form-group">
-            <label class="form-label" for="websites-input-field">Supported Sites</label>
-            <textarea class="form-textarea" id="websites-input-field" rows="4" placeholder="Enter manga site domains, one per line" spellcheck="false" style="max-height:140px; overflow-y:auto;"></textarea>
-          </div>
+        <div class="form-group">
+          <label class="form-label" for="websites-input-field">Supported Sites</label>
+          <textarea class="form-textarea" id="websites-input-field" rows="3" placeholder="Enter manga site domains, one per line" spellcheck="false"></textarea>
+        </div>
 
-          <div class="form-group">
-            <button class="btn btn-outline" id="addsite" style="display: none;">Add Current Site</button>
-          </div>
+        <div class="form-group">
+          <button class="btn btn-outline" id="addsite" style="display: none;">Add Current Site</button>
         </div>
       </section>
 
